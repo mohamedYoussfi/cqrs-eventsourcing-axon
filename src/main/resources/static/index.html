@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothie/1.34.0/smoothie.min.js"></script>
+</head>
+<body>
+<canvas id="chart2" width="600" height="400"></canvas>
+<script>
+    courbe=new TimeSeries();
+    var smoothieChart = new SmoothieChart({tooltip: true});
+    smoothieChart.streamTo(document.getElementById("chart2"), 500);
+    smoothieChart.addTimeSeries(courbe, {strokeStyle : 'rgba(0, 255, 0, 1)', fillStyle : 'rgba(0, 255, 255, 0.2)', lineWidth : 2});
+    var stockEventSource= new EventSource("query/4ffef2af-d9e9-47a1-a093-c4ca9514403a/watch");
+    stockEventSource.addEventListener("message", function (event) {
+        var val=JSON.parse(event.data);
+        courbe.append(new Date().getTime(),val.balance);
+    }, false);
+</script>
+</body>
+</html>
+</body>
+</html>
